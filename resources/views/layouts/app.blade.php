@@ -29,9 +29,10 @@
     {{-- File Manager --}}
     {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"> --}}
     {{-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.2/css/all.css"> --}}
-    <link href="{{ asset('vendor/file-manager/css/file-manager.css') }}" rel="stylesheet">
-    {{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"> --}}
+    {{-- <link href="{{ asset('vendor/file-manager/css/file-manager.css') }}" rel="stylesheet"> --}}
+    {{-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"> --}}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    {{-- <link rel="stylesheet" href="{{ asset('vendor/file-manager/css/file-manager.css') }}"> --}}
 </head>
 <body class="d-flex flex-column h-100">
     @auth
@@ -51,7 +52,7 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item me-3 dropdown">
+                        {{-- <li class="nav-item me-3 dropdown">
                             <a class="nav-link active dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" title="Fisiere">
                                 <i class="fa-solid fa-folder"></i>
                             </a>
@@ -68,63 +69,11 @@
                                     </a>
                                 </li>
                             </ul>
-                        </li>
+                        </li> --}}
                         <li class="nav-item me-3">
                             <a class="nav-link active" aria-current="page" href="/acasa" title="Pagina principală">
                                 <i class="fa-solid fa-house"></i>&nbsp;
                             </a>
-                        </li>
-                        <li class="nav-item me-3">
-                            <a class="nav-link active" aria-current="page" href="/comenzi">
-                                <i class="fa-solid fa-clipboard-list me-1"></i>Comenzi
-                            </a>
-                        </li>
-                        {{-- <li class="nav-item me-3">
-                            <a class="nav-link active" aria-current="page" href="/comenzi-statusuri">
-                                <i class="fa-solid fa-circle-check me-1"></i>Statusuri
-                            </a>
-                        </li> --}}
-                        <li class="nav-item me-3 dropdown">
-                            <a class="nav-link active dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fas fa-users me-1"></i>
-                                Firme
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li>
-                                    <a class="dropdown-item" href="/firme/clienti">
-                                        <i class="fa-solid fa-users me-1"></i>Clienți
-                                    </a>
-                                </li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li>
-                                    <a class="dropdown-item" href="/firme/transportatori">
-                                        <i class="fa-solid fa-people-carry-box me-1"></i>Transportatori
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="nav-item me-3">
-                            <a class="nav-link active" aria-current="page" href="/camioane">
-                                <i class="fa-solid fa-truck me-1"></i>Camioane
-                            </a>
-                        </li>
-                        <li class="nav-item me-3">
-                            <a class="nav-link active" aria-current="page" href="/locuri-operare">
-                                <i class="fa-solid fa-location-dot me-1"></i>Locuri de operare
-                            </a>
-                        </li>
-                        <li class="nav-item me-3 dropdown">
-                            <a class="nav-link active dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                <i class="fas fa-bars me-1"></i>
-                                Utile
-                            </a>
-                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li>
-                                    <a class="dropdown-item" href="{{ route('mesaje-trimise-sms.index') }}">
-                                        SMS trimise
-                                    </a>
-                                </li>
-                            </ul>
                         </li>
                     </ul>
 

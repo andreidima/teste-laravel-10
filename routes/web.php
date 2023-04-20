@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\EmagController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -23,8 +24,13 @@ Route::view('/acasa', 'acasa');
 Route::group(['middleware' => 'auth'], function () {
 });
 
+Route::view('/file-manager', 'vendor/file-manager/fmButton');
+
 Route::group(['prefix' => 'laravel-filemanager'], function (){
     \UniSharp\LaravelFilemanager\Lfm::routes();
 });
+
+Route::get('/emag', [EmagController::class, 'citire']);
+Route::get('/emag/stoc-update', [EmagController::class, 'stocUpdate']);
 
 
