@@ -31,6 +31,6 @@ Route::group(['prefix' => 'laravel-filemanager'], function (){
 });
 
 Route::get('/emag', [EmagController::class, 'citire']);
-Route::get('/emag/stoc-update', [EmagController::class, 'stocUpdate']);
-
+Route::get('/emag/produse/{produsId}/editare', [EmagController::class, 'editareProdus']);
+Route::get('/emag/produse/{produsId}/actualizare-stoc', [EmagController::class, 'actualizareStocProdus']);
 
