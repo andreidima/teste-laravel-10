@@ -212,7 +212,8 @@ echo json_encode($data);
             // curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
             curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
             // curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(array('stock' => $data)));
+            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
+            echo http_build_query($data);
             $result = curl_exec($ch);
             echo $result . "\n";
 
