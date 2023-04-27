@@ -106,7 +106,6 @@ class EmagController extends Controller
             $data =
                 Array(
                 Array(
-                    // "id" => "378",
                     "id" => $produsId,
                     "name" => "Geaca de denim borg Topman decupat si coase in negru - NEGRU 11112222",
                     "status" => "1",
@@ -143,9 +142,6 @@ class EmagController extends Controller
                 'Authorization: Basic ' . $hash
             );
             $ch = curl_init();
-            // curl_setopt($ch, CURLOPT_URL, 'https://marketplace.emag.ro/api-3/category/read');
-            // MARKETPLACE_API_URL	https://marketplace-api.emag.ro/api-3
-            // curl_setopt($ch, CURLOPT_URL, 'https://marketplace-api.emag.ro/api-3/offer_stock/378');
             curl_setopt($ch, CURLOPT_URL, 'https://marketplace-api.emag.ro/api-3/product_offer/save');
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
             curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
@@ -159,38 +155,15 @@ class EmagController extends Controller
 
     }
 
-    public function actualizareStocProdus($produsId = null){
+    public function actualizareStocProdus(int $produsId = null, int $stoc = null){
         echo 'Running...<br>';
         echo 'Produs ID: ' . $produsId . '<br>';
+        echo 'Stoc: ' . $stoc . '<br>';
 
             $data =
                 array (
-                    "stock" => 21
+                    "stock"=> $stoc
                 );
-            // $data =
-            //     Array(
-            //     Array(
-            //         "stock" => Array(
-            //         Array(
-            //             "warehouse_id" => "1",
-            //             "value" => "2"
-            //         )
-            //         )
-            //     )
-            //     );
-
-            // $stock = 2;
-
-            // echo $data;
-            //     echo http_build_query(array('data' => $data));
-            // dd($data);
-
-            // dd('stop');
-// $data = [
-// 			'stock'			=> 123,
-
-// ];
-echo json_encode($data);
 
             $username = 'emag@kids-outlet.ro';
             $password = 'HGDw6872T$^&Da';
@@ -200,20 +173,14 @@ echo json_encode($data);
                 'Authorization: Basic ' . $hash
             );
             $ch = curl_init();
-            // curl_setopt($ch, CURLOPT_URL, 'https://marketplace.emag.ro/api-3/category/read');
-            // MARKETPLACE_API_URL	https://marketplace-api.emag.ro/api-3
-            // curl_setopt($ch, CURLOPT_URL, 'https://marketplace-api.emag.ro/api-3/offer_stock/' . $produsId);
-            curl_setopt($ch, CURLOPT_URL, 'https://marketplace-api.emag.ro/api-3/offer_stock/378');
-            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+            curl_setopt($ch, CURLOPT_URL, 'https://marketplace-api.emag.ro/api-3/offer_stock/' . $produsId);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
             curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
             curl_setopt($ch, CURLOPT_HEADER, 0);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PATCH');
-            // curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
             curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-            // curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
-            echo http_build_query($data);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode( $data ));
             $result = curl_exec($ch);
             echo $result . "\n";
 
