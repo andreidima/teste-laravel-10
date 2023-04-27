@@ -99,7 +99,94 @@ class EmagController extends Controller
 
     }
 
-    public function editareProdus($produsId = null){
+    public function adauga(){
+        echo 'Running...<br>';
+
+            $data =
+                Array(
+                    Array(
+                        "id" => "11000",
+                        // "category_id" => "1315",
+                        "part_number" => "test-part-number",
+                        // "source_language" => "de_DE",
+                        "name" => "Test name",
+                        // "description" => "Test description",
+                        "brand" => "Test brand name",
+                        // "images" => Array(
+                        //     Array(
+                        //     "display_type" => "1",
+                        //     "url" => "http://www.image-url.test"
+                        //     )
+                        // ),
+                        // "url" => "http://www.product-url.test",
+                        // "status" => "1",
+                        // "sale_price" => "406.4515",
+                        // "recommended_price" => "506.4515",
+                        // "min_sale_price" => "200.0000",
+                        // "max_sale_price" => "700.0000",
+                        // "availability" => Array(
+                        // Array(
+                        //     "warehouse_id" => "1",
+                        //     "id" => "3"
+                        // )
+                        // ),
+                        // "handling_time" => Array(
+                        // Array(
+                        //     "warehouse_id" => "1",
+                        //     "value" => "2"
+                        // )
+                        // ),
+                        // "stock" => Array(
+                        // Array(
+                        //     "warehouse_id" => "1",
+                        //     "value" => "2"
+                        // )
+                        // ),
+                        // "commission" => Array(
+                        // "type" => "percentage",
+                        // "value" => "8"
+                        // ),
+                        // "vat_id" => "1",
+                        // "characteristics" => Array(
+                        // Array(
+                        //     "id" => "5213",
+                        //     "value" => "Characteristic 5213 value"
+                        // ),
+                        // Array(
+                        //     "id" => "1339",
+                        //     "value" => "Characteristic 1339 1st value"
+                        // ),
+                        // Array(
+                        //     "id" => "1339",
+                        //     "value" => " Characteristic 1339 2nd value"
+                        // )
+                        // )
+                    )
+                        );
+
+
+
+            $username = 'emag@kids-outlet.ro';
+            $password = 'HGDw6872T$^&Da';
+            $hash = base64_encode($username . ':' . $password);
+            $headers = array(
+                'Authorization: Basic ' . $hash
+            );
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, 'https://marketplace-api.emag.ro/api-3/product_offer/save');
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+            curl_setopt($ch, CURLOPT_HEADER, 0);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(array('data' => $data)));
+            $result = curl_exec($ch);
+            echo $result . "\n";
+
+    }
+
+    public function editare($produsId = null){
         echo 'Running...<br>';
         echo 'Produs ID: ' . $produsId . '<br>';
 
