@@ -17,24 +17,25 @@ use App\Http\Controllers\EmagController;
 Auth::routes(['register' => false, 'password.request' => false, 'reset' => false]);
 
 
-Route::redirect('/', '/acasa');
-
-Route::view('/acasa', 'acasa');
-
 Route::group(['middleware' => 'auth'], function () {
+    Route::redirect('/', '/acasa');
+
+    Route::view('/acasa', 'acasa');
+
+    Route::group(['middleware' => 'auth'], function () {
+    });
+
+    Route::view('/file-manager', 'vendor/file-manager/fmButton');
+
+    Route::group(['prefix' => 'laravel-filemanager'], function (){
+        \UniSharp\LaravelFilemanager\Lfm::routes();
+    });
+
+    Route::get('/emag', [EmagController::class, 'citire']);
+    Route::get('/emag/produse/adauga', [EmagController::class, 'adauga']);
+    Route::get('/emag/produse/{produsId}/editare', [EmagController::class, 'editare']);
+    Route::get('/emag/produse/{produsId}/actualizare-stoc/{stoc}', [EmagController::class, 'actualizareStocProdus']);
 });
-
-Route::view('/file-manager', 'vendor/file-manager/fmButton');
-
-Route::group(['prefix' => 'laravel-filemanager'], function (){
-    \UniSharp\LaravelFilemanager\Lfm::routes();
-});
-
-Route::get('/emag', [EmagController::class, 'citire']);
-Route::get('/emag/produse/adauga', [EmagController::class, 'adauga']);
-Route::get('/emag/produse/{produsId}/editare', [EmagController::class, 'editare']);
-Route::get('/emag/produse/{produsId}/actualizare-stoc/{stoc}', [EmagController::class, 'actualizareStocProdus']);
-
 // v
 
 
