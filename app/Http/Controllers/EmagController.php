@@ -106,7 +106,7 @@ class EmagController extends Controller
                 Array(
                     Array(
                         "id" => "11000",
-                        // "category_id" => "1315",
+                        "category_id" => "1390",
                         "part_number" => "test-part-number",
                         // "source_language" => "de_DE",
                         "name" => "Test name",
@@ -120,7 +120,7 @@ class EmagController extends Controller
                         // ),
                         // "url" => "http://www.product-url.test",
                         // "status" => "1",
-                        // "sale_price" => "406.4515",
+                        "sale_price" => "100",
                         // "recommended_price" => "506.4515",
                         // "min_sale_price" => "200.0000",
                         // "max_sale_price" => "700.0000",
@@ -130,37 +130,43 @@ class EmagController extends Controller
                         //     "id" => "3"
                         // )
                         // ),
+                        "ean" => Array(
+                            // Array(
+                            //     "0" => "5996523771242",
+                            // )
+                            "5996523771242"
+                        ),
                         // "handling_time" => Array(
                         // Array(
                         //     "warehouse_id" => "1",
                         //     "value" => "2"
                         // )
                         // ),
-                        // "stock" => Array(
-                        // Array(
-                        //     "warehouse_id" => "1",
-                        //     "value" => "2"
-                        // )
-                        // ),
+                        "stock" => Array(
+                            Array(
+                                "warehouse_id" => "1",
+                                "value" => "0"
+                            )
+                        ),
                         // "commission" => Array(
                         // "type" => "percentage",
                         // "value" => "8"
                         // ),
-                        // "vat_id" => "1",
-                        // "characteristics" => Array(
-                        // Array(
-                        //     "id" => "5213",
-                        //     "value" => "Characteristic 5213 value"
-                        // ),
-                        // Array(
-                        //     "id" => "1339",
-                        //     "value" => "Characteristic 1339 1st value"
-                        // ),
-                        // Array(
-                        //     "id" => "1339",
-                        //     "value" => " Characteristic 1339 2nd value"
-                        // )
-                        // )
+                        "vat_id" => "1",
+                        "characteristics" => Array(
+                            Array(
+                                "id" => "4162",
+                                "value" => "24 luni"
+                            ),
+                            Array(
+                                "id" => "6372",
+                                "value" => "Poliester"
+                            ),
+                            Array(
+                                "id" => "5401",
+                                "value" => "Negru"
+                            )
+                        )
                     )
                         );
 
