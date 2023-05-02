@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class EmagController extends Controller
 {
@@ -102,16 +103,25 @@ class EmagController extends Controller
     public function adauga(){
         echo 'Running...<br>';
 
-            $data =
-                Array(
+        $produse_de_importat = DB::table('emag_import')->get();
+
+        $data = [];
+
+        foreach ($produse_de_importat as $key => $produs) {
+            echo $produs->id . '<br>';
+            echo $produs->name . '<br>';
+            echo '<br><br>';
+
+
+            $produs_array =
                     Array(
-                        "id" => "11000",
-                        "category_id" => "1390",
-                        "part_number" => "test-part-number",
-                        // "source_language" => "de_DE",
-                        "name" => "Test name",
+                        "id" => $produs->id,
+                        "category_id" => $produs->category_id,
+                        "part_number" => $produs->part_number,
+                        "source_language" => "en_GB",
+                        "name" => $produs->name,
                         // "description" => "Test description",
-                        "brand" => "Test brand name",
+                        "brand" => $produs->brand,
                         // "images" => Array(
                         //     Array(
                         //     "display_type" => "1",
@@ -120,7 +130,7 @@ class EmagController extends Controller
                         // ),
                         // "url" => "http://www.product-url.test",
                         // "status" => "1",
-                        "sale_price" => "100",
+                        "sale_price" => $produs->sale_price,
                         // "recommended_price" => "506.4515",
                         // "min_sale_price" => "200.0000",
                         // "max_sale_price" => "700.0000",
@@ -134,7 +144,7 @@ class EmagController extends Controller
                             // Array(
                             //     "0" => "5996523771242",
                             // )
-                            "5996523771242"
+                            $produs->ean
                         ),
                         // "handling_time" => Array(
                         // Array(
@@ -145,7 +155,7 @@ class EmagController extends Controller
                         "stock" => Array(
                             Array(
                                 "warehouse_id" => "1",
-                                "value" => "0"
+                                "value" => $produs->stock
                             )
                         ),
                         // "commission" => Array(
@@ -164,13 +174,20 @@ class EmagController extends Controller
                             ),
                             Array(
                                 "id" => "5401",
-                                "value" => "Negru"
+                                "value" => $produs->culoare
+                            ),
+                            Array(
+                                "id" => "10921",
+                                "value" => $produs->marime
                             )
                         )
-                    )
+
                         );
 
+            $data[] = $produs_array;
+        }
 
+        // dd($data, 'stop');
 
             $username = 'emag@kids-outlet.ro';
             $password = 'HGDw6872T$^&Da';
