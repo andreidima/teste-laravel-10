@@ -31,7 +31,12 @@ Route::group(['middleware' => 'auth'], function () {
         \UniSharp\LaravelFilemanager\Lfm::routes();
     });
 
-    Route::get('/emag', [EmagController::class, 'citire']);
+
+    Route::get('/emag/categorii/citire-din-emag', [EmagController::class, 'citireCategoriiDinEmag']);
+    Route::get('/emag/categorii/vizualizare-in-aplicatie', [EmagController::class, 'vizualizareCategoriiInAplicatie']);
+
+    Route::get('/emag/produse', [EmagController::class, 'indexProduse']);
+
     Route::get('/emag/produse/adauga', [EmagController::class, 'adauga']);
     Route::get('/emag/produse/{produsId}/editare', [EmagController::class, 'editare']);
     Route::get('/emag/produse/{produsId}/actualizare-stoc/{stoc}', [EmagController::class, 'actualizareStocProdus']);

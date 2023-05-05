@@ -2,19 +2,132 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\EmagCategorie;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class EmagController extends Controller
 {
-    public function citire(){
-        // Datele de autorizare
-        $username = 'emag@kids-outlet.ro';
-        $password = 'HGDw6872T$^&Da';
-        $hash = base64_encode($username . ':' . $password);
-        $headers = array(
-            'Authorization: Basic ' . $hash
-        );
+    public function autorizare(){
+            $username = 'emag@kids-outlet.ro';
+            $password = 'HGDw6872T$^&Da';
+
+            $hash = base64_encode($username . ':' . $password);
+
+            $headers = array(
+                'Authorization: Basic ' . $hash
+            );
+
+            return $headers;
+    }
+
+
+    public function citireCategoriiDinEmag(){
+        // Aflarea numarului de categorii
+        // Aflarea a cate pagini trebuie citite, si cate categorii per pagina
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, 'https://marketplace.emag.ro/api-3/category/count');
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $this->autorizare());
+        $result = curl_exec($ch);
+
+        $all=json_decode($result); // decode response
+
+        if (!isset($all->isError) || ($all->isError !== false)){
+            foreach ($all->messages as $message){
+                echo $message;
+            }
+            return ;
+        }
+
+        $noOfItems = $all->results->noOfItems; // numarul total de produse
+        $noOfPages = $all->results->noOfPages; // numarul total de pagini
+        $itemsPerPage = $all->results->itemsPerPage; // numarul de produse per pagina
+
+
+
+        // for ($i=1; $i<=$noOfPages; $i++){
+        for ($i=1; $i<=1; $i++){
+            $data =
+                array (
+                    'currentPage' => $i,
+                    'itemsPerPage' => 5,
+                    'id' => 3784
+                );
+
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, 'https://marketplace.emag.ro/api-3/category/read');
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+            curl_setopt($ch, CURLOPT_HEADER, 0);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $this->autorizare());
+            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(array('data' => $data)));
+            $result = curl_exec($ch);
+
+            $all=json_decode($result); // decode response
+
+            if (!isset($all->isError) || ($all->isError !== false)){
+                echo 'Eroare';
+                foreach ($all->messages as $message){
+                    echo $message;
+                }
+                return ;
+            }
+
+            foreach ($all->results as $categorie) {
+                // if ($categorie->id === 378){
+                    // DB::table('emag_categorii')->insert([
+                    //     'id' => $categorie->id,
+                    //     'parent_id' => $categorie->parent_id,
+                    //     'name' => $categorie->name,
+                    // ]);
+                    // echo '<br>';
+                    // echo $categorie->id . ' - ' . $categorie->parent_id . ' - ' . $categorie->name;
+                    // echo '<br>';
+                // }
+                    echo '<pre>';
+                    print_r($categorie);
+                    echo '</pre>';
+            }
+        }
+
+    }
+
+    public function vizualizareCategoriiInAplicatie(){
+        $emag_categorii = EmagCategorie::get();
+
+        echo '<ol>';
+
+        function to_html($categorie) {
+            echo '<li>' . $categorie->name . ' (' . $categorie->id . ')';
+
+            if (!empty($categorie->subcategorii)) {
+
+                echo '<ol>';
+
+                foreach ($categorie->subcategorii as $subcategorie) {
+                    to_html($subcategorie);
+                }
+            echo '</ol>';
+            }
+            echo "</li>\n";
+        }
+
+        foreach ($emag_categorii->where('parent_id', null) as $categorie){
+            to_html($categorie);
+        }
+
+        echo '</ol>';
+    }
+
+    public function indexProduse(){
 
         // Aflarea numarului de produse
         // Aflarea a cate pagini trebuie citite, si cate produse per pagina
@@ -25,7 +138,7 @@ class EmagController extends Controller
         curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'GET');
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $this->autorizare());
         $result = curl_exec($ch);
 
         $all=json_decode($result); // decode response
@@ -62,7 +175,7 @@ class EmagController extends Controller
             curl_setopt($ch, CURLOPT_HEADER, 0);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
-            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $this->autorizare());
             curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(array('data' => $data)));
             $result = curl_exec($ch);
 
@@ -90,7 +203,7 @@ class EmagController extends Controller
                     // echo 'Nume produs: ' . ($produs->name ?? '') . '<br>';
                     // echo '<br><br>';
                 // }
-                if ($produs->id === 378){
+                if ($produs->id === 11011){
                     echo '<pre>';
                     print_r($produs);
                     echo '</pre>';
@@ -103,15 +216,16 @@ class EmagController extends Controller
     public function adauga(){
         echo 'Running...<br>';
 
-        $produse_de_importat = DB::table('emag_import')->get();
+        $produse_de_importat = DB::table('emag_import')->where('id_pk', 11)->get();
+        // $produse_de_importat = DB::table('emag_import')->where('id_pk', '>', 11)->get();
 
         $data = [];
 
         foreach ($produse_de_importat as $key => $produs) {
             echo $produs->id . '<br>';
             echo $produs->name . '<br>';
+            echo $produs->material . '<br>';
             echo '<br><br>';
-
 
             $produs_array =
                     Array(
@@ -120,16 +234,17 @@ class EmagController extends Controller
                         "part_number" => $produs->part_number,
                         "source_language" => "en_GB",
                         "name" => $produs->name,
-                        // "description" => "Test description",
+                        "description" => $produs->description,
                         "brand" => $produs->brand,
-                        // "images" => Array(
-                        //     Array(
-                        //     "display_type" => "1",
-                        //     "url" => "http://www.image-url.test"
-                        //     )
-                        // ),
+                        "images" => Array(
+                            Array(
+                            "display_type" => "1",
+                            "url" => $produs->image_url
+                            )
+                        ),
                         // "url" => "http://www.product-url.test",
                         // "status" => "1",
+                        // "sale_price" => $produs->sale_price,
                         "sale_price" => $produs->sale_price,
                         // "recommended_price" => "506.4515",
                         // "min_sale_price" => "200.0000",
@@ -156,6 +271,7 @@ class EmagController extends Controller
                             Array(
                                 "warehouse_id" => "1",
                                 "value" => $produs->stock
+                                // "value" => 6
                             )
                         ),
                         // "commission" => Array(
@@ -164,37 +280,35 @@ class EmagController extends Controller
                         // ),
                         "vat_id" => "1",
                         "characteristics" => Array(
+                            // Array(
+                            //     "id" => "6372",
+                            //     // "value" => $produs->material
+                            //     "value" => "Sintetic"
+                            // ),
                             Array(
-                                "id" => "4162",
-                                "value" => "24 luni"
-                            ),
-                            Array(
-                                "id" => "6372",
-                                "value" => "Poliester"
+                                "id" => "5401",
+                                // "value" => $produs->culoare
+                                // "value" => 'Alb'
+                                "value" => "White"
                             ),
                             Array(
                                 "id" => "5401",
-                                "value" => $produs->culoare
+                                // "value" => $produs->culoare
+                                "value" => 'Alb'
+                                // "value" => "White"
                             ),
-                            Array(
-                                "id" => "10921",
-                                "value" => $produs->marime
-                            )
+                            // Array(
+                            //     "id" => "6506",
+                            //     "value" => $produs->marime
+                            // )
                         )
 
                         );
 
             $data[] = $produs_array;
         }
-
         // dd($data, 'stop');
 
-            $username = 'emag@kids-outlet.ro';
-            $password = 'HGDw6872T$^&Da';
-            $hash = base64_encode($username . ':' . $password);
-            $headers = array(
-                'Authorization: Basic ' . $hash
-            );
             $ch = curl_init();
             curl_setopt($ch, CURLOPT_URL, 'https://marketplace-api.emag.ro/api-3/product_offer/save');
             curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
@@ -202,7 +316,7 @@ class EmagController extends Controller
             curl_setopt($ch, CURLOPT_HEADER, 0);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
-            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $this->autorizare());
             curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(array('data' => $data)));
             $result = curl_exec($ch);
             echo $result . "\n";
